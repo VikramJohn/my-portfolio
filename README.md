@@ -1,9 +1,9 @@
 # My portfolio
 
-### 1. [Release notes template for a system that uses a multi-service architecture](https://github.com/VikramJohn/my-portfolio/blob/main/multiservice-rn-template)
+### 1. [Release notes template for a system that uses a multi-service architecture](https://github.com/VikramJohn/my-portfolio/tree/main/docs-release-notes)
 
-If you ship a processing system that includes multiple services that your clients subscribe to selectively, each release note pertains to one or more services. This template allows you to tag release notes by two categories---component and service---and filter displayed release notes by these tags.
+This template builds release notes pages using Hugo with the Docsy theme implemented as a submodule. You can tag release notes by two categories---component and service---and filter displayed release notes by these tags. 
 
-The template is built using Hugo with Docsy as a submodule. 
+My target while creating the template was the [Kubernetes release notes page](https://relnotes.k8s.io/), which sadly seems to be broken now. 
 
-### 2. Install a specific version on postgres on an Ubuntu system
+### 2. Install a specific version of postgres on an Ubuntu system

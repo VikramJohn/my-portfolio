@@ -1,0 +1,295 @@
+{{ define "main" }}
+<div class="container-fluid" style="margin-top: 100px; margin-bottom: 50px;"> <!-- Easy pixel-based positioning -->
+  <div class="td-content">
+    <div class="row">
+      <!-- Left Sidebar for Filters -->
+      <div class="col-lg-3 col-md-4 d-print-none">
+        <div class="filter-container" style="margin-top: 20px;"> <!-- Easy-to-edit filter positioning -->
+          <div class="td-sidebar-nav__section">
+            <div class="card">
+              <div class="card-header bg-primary text-white">
+                <h6 class="mb-0">Filter Release Notes</h6>
+              </div>
+              <div class="card-body p-2">
+                <!-- Changetype Filters -->
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0 small">Type</h6>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="selectAllChangetypes">Toggle All</button>
+                  </div>
+                  <div class="form-check-container">
+                    <div class="form-check form-check-sm">
+                      <input class="form-check-input" type="checkbox" value="Added" id="changetype-added" name="changetypeFilter">
+                      <label class="form-check-label" for="changetype-added">Added</label>
+                    </div>
+                    <div class="form-check form-check-sm">
+                      <input class="form-check-input" type="checkbox" value="Changed" id="changetype-changed" name="changetypeFilter">
+                      <label class="form-check-label" for="changetype-changed">Changed</label>
+                    </div>
+                    <div class="form-check form-check-sm">
+                      <input class="form-check-input" type="checkbox" value="Fixed" id="changetype-fixed" name="changetypeFilter">
+                      <label class="form-check-label" for="changetype-fixed">Fixed</label>
+                    </div>
+                    <div class="form-check form-check-sm">
+                      <input class="form-check-input" type="checkbox" value="Deprecated" id="changetype-deprecated" name="changetypeFilter">
+                      <label class="form-check-label" for="changetype-deprecated">Deprecated</label>
+                    </div>
+                    <div class="form-check form-check-sm">
+                      <input class="form-check-input" type="checkbox" value="Compliance" id="changetype-compliance" name="changetypeFilter">
+                      <label class="form-check-label" for="changetype-compliance">Compliance</label>
+                    </div>
+                    <div class="form-check form-check-sm">
+                      <input class="form-check-input" type="checkbox" value="Api" id="changetype-api" name="changetypeFilter">
+                      <label class="form-check-label" for="changetype-api">API</label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Component Filters -->
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0 small">Component</h6>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="selectAllComponents">Toggle All</button>
+                  </div>
+                  <div class="form-check-container">
+                    {{ range $.Site.Data.rncategories.components }}
+                    <div class="form-check form-check-sm">
+                      <input class="form-check-input" type="checkbox" value="{{ .id }}" id="component-{{ .id }}" name="componentFilter">
+                      <label class="form-check-label" for="component-{{ .id }}">{{ .name }}</label>
+                    </div>
+                    {{ end }}
+                  </div>
+                </div>
+
+                <!-- Service Filters -->
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0 small">Service</h6>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="selectAllServices">Toggle All</button>
+                  </div>
+                  <div class="form-check-container">
+                    {{ range $.Site.Data.rncategories.services }}
+                    <div class="form-check form-check-sm">
+                      <input class="form-check-input" type="checkbox" value="{{ .id }}" id="service-{{ .id }}" name="serviceFilter">
+                      <label class="form-check-label" for="service-{{ .id }}">{{ .name }}</label>
+                    </div>
+                    {{ end }}
+                  </div>
+                </div>
+
+                <!-- Clear Button -->
+                <div class="d-grid gap-2">
+                  <button type="button" class="btn btn-sm btn-warning" id="clearFilters">Clear All Filters</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="col-lg-9 col-md-8">
+        <div class="td-content__wrapper">
+          <div class="mb-3">
+            <h1>{{ .Title }}</h1>
+            {{ .Content }}
+          </div>
+          
+          {{ if .Pages }}
+          <div class="release-notes-container">
+            <!-- Release notes list -->
+            <div class="release-notes-list">
+              {{ range .Pages }}
+              <div class="card mb-3 release-note-card" 
+                   data-changetype="{{ .Params.changetype }}" 
+                   data-components="{{ if .Params.components }}{{ delimit .Params.components "," }}{{ end }}"
+                   data-services="{{ if .Params.services }}{{ delimit .Params.services "," }}{{ end }}">
+                <div class="card-header">
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <h5 class="mb-0">
+                        <a href="{{ .RelPermalink }}" class="text-decoration-none">{{ .Params.summary }}</a>
+                      </h5>
+                    </div>
+                    <div class="col-auto">
+                      {{ if .Params.changetype }}
+                      <span class="badge badge-{{ .Params.changetype }} mr-2">{{ .Params.changetype | title }}</span>
+                      {{ end }}
+                      {{ if .Params.breaking_change }}
+                      <span class="badge badge-danger">Breaking</span>
+                      {{ end }}
+                    </div>
+                  </div>
+                  
+                  <div class="small text-muted mt-1">
+                    {{ if .Params.ref_ticket }}
+                    <span class="mr-3">Ticket: {{ .Params.ref_ticket }}</span>
+                    {{ end }}
+                    {{ if .Params.components }}
+                    <span>Components: {{ delimit .Params.components ", " }}</span>
+                    {{ end }}
+                  </div>
+                </div>
+                
+                <div class="card-body">
+                  {{ $content := "" }}
+                  
+                  <!-- Build content snippet defensively -->
+                                   
+                  {{ if .Content }}
+                    {{ $rawContent := .RawContent }}
+                    {{ $cleanContent := $rawContent | replaceRE `##\s*(.+)` "**$1:**" | replaceRE `#\s*(.+)` "**$1:**" }}
+                    {{ $plainContent := $cleanContent | plainify }}
+                    {{ $contentWords := split $plainContent " " }}
+                    {{ $maxWords := 200 }}
+                    {{ $truncatedContent := delimit (first $maxWords $contentWords) " " }}
+                    {{ if gt (len $contentWords) $maxWords }}
+                      {{ $truncatedContent = printf "%s..." $truncatedContent }} <!-- Truncating content here. Add an option to expand and see full content -->
+                    {{ end }}
+                    {{ $content = printf "%s%s" $content $truncatedContent }}
+                  {{ end }}
+                  
+                  {{ if $content }}
+                  <div class="card-text">
+                    {{ $content | markdownify }}
+                  </div>
+                  {{ else }}
+                  <p class="card-text text-muted">
+                    <em>No description available</em>
+                  </p>
+                  {{ end }}
+                  
+                  <div class="row small text-muted">
+                    {{ if .Params.affected_services }}
+                    <div class="col-md-12">
+                      <strong>Services:</strong> {{ delimit .Params.affected_services ", " }}
+                    </div>
+                    {{ end }}
+                  </div>
+                  
+                  <div class="mt-2">
+                    {{ if .Params.upgrade_notes }}
+                    <span class="badge badge-info">Upgrade Required</span>
+                    {{ end }}
+                    {{ if .Params.data_model_changes }}
+                    <span class="badge badge-warning">DB Changes</span>
+                    {{ end }}
+                  </div>
+                </div>
+              </div>
+              {{ end }}
+            </div>
+          </div>
+          {{ else }}
+          <div class="alert alert-info">
+            <p class="mb-0">No release notes available for this version yet.</p>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Multi-select checkbox filtering
+document.addEventListener('DOMContentLoaded', function() {
+  const changetypeCheckboxes = document.querySelectorAll('input[name="changetypeFilter"]');
+  const componentCheckboxes = document.querySelectorAll('input[name="componentFilter"]');
+  const serviceCheckboxes = document.querySelectorAll('input[name="serviceFilter"]');
+  const clearButton = document.getElementById('clearFilters');
+  
+  function getSelectedValues(checkboxes) {
+    return Array.from(checkboxes)
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.value);
+  }
+  
+  function filterNotes() {
+    const selectedChangetypes = getSelectedValues(changetypeCheckboxes);
+    const selectedComponents = getSelectedValues(componentCheckboxes);
+    const selectedServices = getSelectedValues(serviceCheckboxes);
+    const cards = document.querySelectorAll('.release-note-card');
+    
+    cards.forEach(card => {
+      const cardChangetype = card.dataset.changetype;
+      const cardComponents = card.dataset.components.split(',').filter(m => m.length > 0);
+      const cardServices = card.dataset.services.split(',').filter(s => s.length > 0);
+      
+      let showCard = true;
+      
+      if (selectedChangetypes.length > 0 && !selectedChangetypes.includes(cardChangetype)) {
+        showCard = false;
+      }
+      
+      if (selectedComponents.length > 0) {
+        const hasSelectedComponent = selectedComponents.some(component => 
+          cardComponents.includes(component)
+        );
+        if (!hasSelectedComponent) {
+          showCard = false;
+        }
+      }
+      
+      if (selectedServices.length > 0) {
+        const hasSelectedService = selectedServices.some(service => 
+          cardServices.includes(service)
+        );
+        if (!hasSelectedService) {
+          showCard = false;
+        }
+      }
+      
+      card.style.display = showCard ? 'block' : 'none';
+    });
+  }
+  
+  function clearAllFilters() {
+    changetypeCheckboxes.forEach(checkbox => checkbox.checked = false);
+    componentCheckboxes.forEach(checkbox => checkbox.checked = false);
+    serviceCheckboxes.forEach(checkbox => checkbox.checked = false);
+    filterNotes();
+  }
+  
+  // Add event listeners
+  changetypeCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', filterNotes);
+  });
+  
+  componentCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', filterNotes);
+  });
+  
+  serviceCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', filterNotes);
+  });
+  
+  if (clearButton) {
+    clearButton.addEventListener('click', clearAllFilters);
+  }
+});
+</script>
+
+<style>
+.badge-Added { background-color: #28a745; }
+.badge-Changed { background-color: #ffc107; }
+.badge-Fixed { background-color: #17a2b8; }
+.badge-Deprecated { background-color: #dc3545; }
+.badge-Compliance { background-color: #6f42c1; }
+.badge-Api { background-color: #fd7e14; }
+
+.form-check-sm .form-check-input {
+  margin-top: 0.125rem;
+}
+
+.form-check-sm .form-check-label {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 767.98px) {
+  .td-sidebar-nav__section {
+    position: relative !important;
+  }
+}
+</style>
+{{ end }}

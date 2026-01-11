@@ -1,0 +1,98 @@
+{{ define "main" }}
+<div class="container-fluid" style="margin-top: 100px; margin-bottom: 50px;"> <!-- Easy pixel-based positioning -->
+<div class="td-content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Left Sidebar for Filters -->
+      <div class="col-xl-2 col-lg-3 col-md-4 d-print-none">
+        <div class="filter-container" style="margin-top: 20px;"> <!-- Easy-to-edit filter positioning -->
+        <div class="td-sidebar-nav__section">
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <h6 class="mb-0">Filter Versions</h6>
+            </div>
+            <div class="card-body p-2">
+              <!-- Version-specific filters would go here if needed -->
+              <div class="mb-3">
+                <label class="form-label small">Search versions:</label>
+                <input type="text" class="form-control form-control-sm" id="versionSearch" placeholder="Type to filter...">
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="col-xl-10 col-lg-9 col-md-8">
+        <div class="td-content__wrapper">
+          <h1>{{ .Title }}</h1>
+          {{ .Content }}
+          
+          <!-- Version List -->
+          <div class="versions-list mt-4">
+            {{ $versions := where .Pages "Type" "release-notes" }}
+            {{ range $versions.ByWeight }}
+            <div class="card mb-3 version-card">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h5 class="mb-1">
+                      <a href="{{ .RelPermalink }}" class="text-decoration-none">{{ .Title }}</a>
+                    </h5>
+                    <p class="text-muted mb-0">
+                      {{ if .Params.date }}Release date: {{ .Date.Format "January 2, 2006" }}{{ end }}
+                      <!-- {{ if .Params.version }} • Version: {{ .Params.version }}{{ end }} -->
+                    </p>
+                  </div>
+                  <div class="col-auto">
+                    <a href="{{ .RelPermalink }}" class="btn btn-outline-primary btn-sm">View release notes</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{ end }}
+          </div>
+          
+          {{ if not $versions }}
+          <div class="alert alert-info">
+            <p class="mb-0">No release versions available yet.</p>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// Simple version search
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('versionSearch');
+  const versionCards = document.querySelectorAll('.version-card');
+  
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      
+      versionCards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+});
+</script>
+
+<style>
+.version-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s;
+}
+</style>
+{{ end }}

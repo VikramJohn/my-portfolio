@@ -1,0 +1,6 @@
+[submodule "themes/docsy"]
+	path = themes/docsy
+	url = https://github.com/google/docsy.git
+[submodule "docs-release-notes/themes/docsy"]
+	path = docs-release-notes/themes/docsy
+	url = https://github.com/google/docsy.git

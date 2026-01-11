@@ -1,0 +1,2 @@
+{{ $diagram := .Inner | replaceRE "\\s+" " " | urlquery }}
+<img src="https://kroki.io/plantuml/svg/{{ $diagram }}" alt="PlantUML diagram" />

@@ -1,0 +1,19 @@
+- id: "authservice"
+  name: "authservice"
+  description: "User authorization service"
+
+- id: "hsmc"  
+  name: "hsmc"
+  description: "HSM Controller"
+
+- id: "csapi"
+  name: "csapi" 
+  description: "Customer Services API"
+
+- id: "authproc"
+  name: "authproc"
+  description: "Authorizations processor"
+
+- id: "transactionproc"
+  name: "transactionproc"
+  description: "Transactions processor"

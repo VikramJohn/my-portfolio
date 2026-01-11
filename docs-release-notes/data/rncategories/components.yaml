@@ -1,0 +1,11 @@
+- id: "component1"
+  name: "Component X"
+  description: "Component X"
+
+- id: "component2" 
+  name: "Component Y"
+  description: "Component Y"
+
+- id: "component3"
+  name: "Component Z"
+  description: "Component Z"

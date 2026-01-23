@@ -32,4 +32,14 @@ A customized Hugo-Docsy documentation template designed for publishing release n
 
 ---
 
-### 2. Installing PostgreSQL 15.3 on Ubuntu from Source
+### 2. Installing PostgreSQL 14.3 on Ubuntu from Source
+
+Standard Ubuntu repositories and PostgreSQL's APT repository don't maintain old patch versions (14.3 specifically).This guide walks through installing PostgreSQL 15.3 from source tarballs when specific version pinning is required.
+
+What this demonstrates:
+- Ubuntu command-line proficiency and systems administration
+- User and permission management
+- Problem-solving when standard documentation doesn't apply
+- Capacity to write for technical audiences (developers/DBAs) and prepare task-oriented documentation solving a specific real-world problem.
+
+**Note**: This document was originally a work task. I've recreated it, partly from memory and partly from the results of testing. The procedure was tested on an Ubuntu 22.04 server using a Multipass VM.

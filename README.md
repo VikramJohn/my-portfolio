@@ -11,16 +11,16 @@ I specialize in creating clear, structured documentation for technical audiences
 
 A customized Hugo-Docsy documentation template designed for publishing release notes in microservices environments.
 
-- **Service-based organization**: Tag and categorize release notes by individual services and components
+- **Service-based organization**: Tags and categorizes release notes by individual services and components
 - **Filtering capabilities**: Users can filter release notes by service, component, or version.
-- **Scalable architecture**: Designed for organizations with multiple services and frequent releases
-- **Developer-friendly workflow**: Includes CI pipeline for static site generation
+- **Scalable architecture**: Designed for organizations with multiple services and a large number of release notes per release.
+- **Developer-friendly workflow**: Includes CI pipeline for static site generation, automating actions in the workflow and tracking progress.
 
 #### What This Demonstrates
 - Understanding of documentation-as-code workflows and static site generators (Git workflows and Hugo)
 - Ability to customize documentation frameworks for specific organizational needs
 - Knowledge of microservices architecture and release management challenges
-- Technical problem-solving: identifying documentation gaps and building tools to address them
+- Technical problem-solving: identifying documentation gaps and working with tools to address them
 - Understanding of CI/CD pipelines and how to automate builds.
 
 #### Technical Details
@@ -29,6 +29,7 @@ A customized Hugo-Docsy documentation template designed for publishing release n
 - Markdown-based content with front matter metadata
 - Responsive design for cross-platform access
 - Git-based workflow for version control and collaboration
+- Purpose-built scripts to support the workflow
 
 ---
 
